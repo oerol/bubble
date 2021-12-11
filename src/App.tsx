@@ -38,9 +38,9 @@ function App() {
     document.body.style.cursor = "ns-resize";
     console.log(boxElement.current!.style.cursor);
     /* 9 pixel less than original css size */
-    if (y > 41) {
-      let height = Math.floor(y / 50) + 1;
-      boxElement.current!.style.height = `${height * 50}px`;
+    if (y > 21) {
+      let height = Math.floor(y / 30) + 1;
+      boxElement.current!.style.height = `${height * 30}px`;
     }
   };
 
