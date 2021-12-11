@@ -5,14 +5,21 @@ function App() {
   const boxElement = useRef<HTMLDivElement>(null);
   let positionElement: HTMLDivElement;
 
-  useEffect(() => {});
+  useEffect(() => {
+    document.addEventListener("mouseup", handleBoxMouseUp);
+    (document.getElementById("box") as HTMLDivElement).addEventListener(
+      "mouseup",
+      handleBoxMouseUp
+    );
+  });
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
     let rect = boxElement.current!.getBoundingClientRect();
     let y = e.clientY - rect.top;
     if (y > boxElement.current!.offsetHeight - 10) {
       boxElement.current!.style.cursor = "ns-resize";
-    } else {
+    } else if (!document.onmousemove) {
+      // if mouse is pressed down
       boxElement.current!.style.cursor = "default";
     }
   };
@@ -28,18 +35,20 @@ function App() {
     let rect = boxElement.current!.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
-
+    document.body.style.cursor = "ns-resize";
+    console.log(boxElement.current!.style.cursor);
     /* 9 pixel less than original css size */
     if (y > 41) {
       let height = Math.floor(y / 50) + 1;
-      console.log(y / 50);
       boxElement.current!.style.height = `${height * 50}px`;
     }
   };
 
-  const handleBoxMouseUp = (e: React.MouseEvent<HTMLElement>) => {
+  const handleBoxMouseUp = (e: MouseEvent | React.MouseEvent<HTMLElement>) => {
+    console.log("naw");
     document.onmouseup = null;
     document.onmousemove = null;
+    document.body.style.cursor = "default";
   };
 
   return (
