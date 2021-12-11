@@ -32,7 +32,10 @@ function App() {
     /* positionElement = document.getElementById("position") as HTMLDivElement; */
     /* positionElement.innerText = `x: ${x}, y: ${y}`; */
 
-    boxElement.current!.style.height = `${e.clientY}px`;
+    if (y > 41) {
+      /* 9 pixel less than original css size */
+      boxElement.current!.style.height = `${e.clientY}px`;
+    }
   };
 
   const handleBoxMouseUp = (e: React.MouseEvent<HTMLElement>) => {
