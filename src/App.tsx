@@ -29,12 +29,11 @@ function App() {
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
 
-    /* positionElement = document.getElementById("position") as HTMLDivElement; */
-    /* positionElement.innerText = `x: ${x}, y: ${y}`; */
-
+    /* 9 pixel less than original css size */
     if (y > 41) {
-      /* 9 pixel less than original css size */
-      boxElement.current!.style.height = `${e.clientY}px`;
+      let height = Math.floor(y / 50) + 1;
+      console.log(y / 50);
+      boxElement.current!.style.height = `${height * 50}px`;
     }
   };
 
