@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from "react";
 
 function App() {
   const boxElement = useRef<HTMLDivElement>(null);
-  let positionElement: HTMLDivElement;
 
   useEffect(() => {
     document.addEventListener("mouseup", handleBoxMouseUp);
@@ -37,15 +36,14 @@ function App() {
     let y = e.clientY - rect.top;
     document.body.style.cursor = "ns-resize";
     console.log(boxElement.current!.style.cursor);
-    /* 9 pixel less than original css size */
-    if (y > 21) {
-      let height = Math.floor(y / 30) + 1;
+    let height = Math.floor(y / 30) + 1;
+    if (y > 21 && height <= 31) {
+      /* 9 pixel less than original css size */
       boxElement.current!.style.height = `${height * 30}px`;
     }
   };
 
   const handleBoxMouseUp = (e: MouseEvent | React.MouseEvent<HTMLElement>) => {
-    console.log("naw");
     document.onmouseup = null;
     document.onmousemove = null;
     document.body.style.cursor = "default";
