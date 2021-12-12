@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface BoxState {
   id: string;
@@ -31,7 +31,6 @@ const App: React.FC = () => {
 
   const handleBoxMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     const node = e.target as HTMLElement;
-    console.log(getBoxesHeight());
 
     document.onmousemove = (e: MouseEvent) => {
       dragBox(e, node);
@@ -43,8 +42,13 @@ const App: React.FC = () => {
     let y = e.clientY - rect.top;
     document.body.style.cursor = "ns-resize";
     let height = Math.floor(y / 30) + 1;
-    if (y > 21 && height <= 31) {
-      /* 9 pixel less than original css size */
+
+    if (height > getBoxHeight(node.id)) {
+      if (getBoxesHeight() < 30) {
+        saveBoxWidth(node, height);
+        node.style.height = `${height * 30}px`;
+      }
+    } else if (height > 0) {
       saveBoxWidth(node, height);
       node.style.height = `${height * 30}px`;
     }
@@ -92,7 +96,13 @@ const App: React.FC = () => {
     for (let box of boxes) {
       height += box.height;
     }
+    console.log(height);
     return height;
+  };
+
+  const getBoxHeight = (id: string) => {
+    const currentBox = boxes.find((box) => id === "box-" + box.id);
+    return currentBox!.height;
   };
 
   return (
