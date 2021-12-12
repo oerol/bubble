@@ -15,7 +15,7 @@ const App: React.FC = () => {
     setBoxes([{ id: "1", height: 1 }]);
 
     document.addEventListener("mouseup", releaseDrag);
-    (document.getElementById("box") as HTMLDivElement).addEventListener("mouseup", releaseDrag);
+    /* (document.getElementById("box") as HTMLDivElement).addEventListener("mouseup", releaseDrag); */
   }, []);
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -34,13 +34,13 @@ const App: React.FC = () => {
 
   const handleBoxMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     const node = e.target as HTMLElement;
+    console.log(getBoxesHeight());
 
     document.onmousemove = (e: MouseEvent) => {
       dragBox(e, node);
     };
   };
   const dragBox = (e: MouseEvent, node: HTMLElement) => {
-    console.log(node);
     let rect = node.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
@@ -48,6 +48,7 @@ const App: React.FC = () => {
     let height = Math.floor(y / 30) + 1;
     if (y > 21 && height <= 31) {
       /* 9 pixel less than original css size */
+      saveBoxWidth(node, height);
       node.style.height = `${height * 30}px`;
     }
   };
@@ -66,22 +67,46 @@ const App: React.FC = () => {
     setBoxes(copyBoxes);
   };
 
+  const colorBox = (i: number) => {
+    let boxClass = "box";
+    switch (i) {
+      case 0:
+        return boxClass + " box-violet";
+      case 1:
+        return boxClass + " box-orange";
+      case 2:
+        return boxClass + " box-teal";
+      case 3:
+        return boxClass + " box-green";
+      default:
+        return boxClass;
+    }
+  };
+
+  const saveBoxWidth = (node: HTMLElement, height: number) => {
+    const position = boxes.findIndex((box) => node.id === "box-" + box.id);
+    let copyBoxes = [...boxes];
+    copyBoxes[position].height = height;
+    setBoxes(copyBoxes);
+  };
+
+  const getBoxesHeight = () => {
+    let height = 0;
+    for (let box of boxes) {
+      height += box.height;
+    }
+    return height;
+  };
+
   return (
     <div className="App">
       <div id="box-holder">
-        <div
-          id="box"
-          className="box"
-          onMouseMove={handleBoxMove}
-          onDrag={handleBoxDrag}
-          onMouseDown={handleBoxMouseDown}
-          onMouseUp={releaseDrag}
-          ref={boxElement}
-        ></div>
-        {boxes.map((box) => {
+        {boxes.map((box, i) => {
           return (
             <div
-              className="box box-violet"
+              key={i}
+              id={"box-" + box.id}
+              className={colorBox(i)}
               onMouseMove={handleBoxMove}
               onDrag={handleBoxDrag}
               onMouseDown={handleBoxMouseDown}

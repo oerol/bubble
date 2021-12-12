@@ -16,6 +16,15 @@
 .box-violet {
   background-color: palevioletred;
 }
+.box-orange {
+  background-color: goldenrod;
+}
+.box-teal {
+  background-color: teal;
+}
+.box-green {
+  background-color: olivedrab;
+}
 
 #box-holder {
   display: inline-block;
