@@ -12,21 +12,21 @@ const App: React.FC = () => {
   const [boxes, setBoxes] = useState<BoxState[]>([]);
 
   useEffect(() => {
-    document.addEventListener("mouseup", handleBoxMouseUp);
-    (document.getElementById("box") as HTMLDivElement).addEventListener(
-      "mouseup",
-      handleBoxMouseUp
-    );
-  });
+    setBoxes([{ id: "1", height: 1 }]);
+
+    document.addEventListener("mouseup", releaseDrag);
+    (document.getElementById("box") as HTMLDivElement).addEventListener("mouseup", releaseDrag);
+  }, []);
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
-    let rect = boxElement.current!.getBoundingClientRect();
+    const node = e.target as HTMLElement;
+    let rect = node.getBoundingClientRect();
     let y = e.clientY - rect.top;
-    if (y > boxElement.current!.offsetHeight - 10) {
-      boxElement.current!.style.cursor = "ns-resize";
+    if (y > node.offsetHeight - 10) {
+      node.style.cursor = "ns-resize";
     } else if (!document.onmousemove) {
       // if mouse is pressed down
-      boxElement.current!.style.cursor = "default";
+      node.style.cursor = "default";
     }
   };
 
@@ -34,27 +34,25 @@ const App: React.FC = () => {
 
   const handleBoxMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     const node = e.target as HTMLElement;
-    console.log(node.getBoundingClientRect());
 
     document.onmousemove = (e: MouseEvent) => {
-      dragBox(e);
+      dragBox(e, node);
     };
   };
-  const dragBox = (e: MouseEvent) => {
-    let rect = boxElement.current!.getBoundingClientRect();
+  const dragBox = (e: MouseEvent, node: HTMLElement) => {
+    console.log(node);
+    let rect = node.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     document.body.style.cursor = "ns-resize";
     let height = Math.floor(y / 30) + 1;
     if (y > 21 && height <= 31) {
       /* 9 pixel less than original css size */
-      setBoxes([{ id: "1", height: height }]);
-
-      boxElement.current!.style.height = `${height * 30}px`;
+      node.style.height = `${height * 30}px`;
     }
   };
 
-  const handleBoxMouseUp = (e: MouseEvent | React.MouseEvent<HTMLElement>) => {
+  const releaseDrag = (e: MouseEvent | React.MouseEvent<HTMLElement>) => {
     document.onmouseup = null;
     document.onmousemove = null;
     document.body.style.cursor = "default";
@@ -77,11 +75,19 @@ const App: React.FC = () => {
           onMouseMove={handleBoxMove}
           onDrag={handleBoxDrag}
           onMouseDown={handleBoxMouseDown}
-          onMouseUp={handleBoxMouseUp}
+          onMouseUp={releaseDrag}
           ref={boxElement}
         ></div>
         {boxes.map((box) => {
-          return <div className="box box-violet"></div>;
+          return (
+            <div
+              className="box box-violet"
+              onMouseMove={handleBoxMove}
+              onDrag={handleBoxDrag}
+              onMouseDown={handleBoxMouseDown}
+              onMouseUp={releaseDrag}
+            ></div>
+          );
         })}
       </div>
       <button onClick={addBox}>add</button>
