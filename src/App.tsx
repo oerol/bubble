@@ -31,10 +31,15 @@ const App: React.FC = () => {
 
   const handleBoxMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     const node = e.target as HTMLElement;
+    let rect = node.getBoundingClientRect();
+    let y = e.clientY - rect.top;
 
-    document.onmousemove = (e: MouseEvent) => {
-      dragBox(e, node);
-    };
+    if (y > node.offsetHeight - 10) {
+      node.style.cursor = "ns-resize";
+      document.onmousemove = (e: MouseEvent) => {
+        dragBox(e, node);
+      };
+    }
   };
   const dragBox = (e: MouseEvent, node: HTMLElement) => {
     let rect = node.getBoundingClientRect();
