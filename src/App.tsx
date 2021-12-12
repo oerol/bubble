@@ -7,15 +7,12 @@ interface BoxState {
 }
 
 const App: React.FC = () => {
-  const boxElement = useRef<HTMLDivElement>(null);
-  /* const [boxes, setBoxes] = useState<BoxState | undefined>(undefined); */
   const [boxes, setBoxes] = useState<BoxState[]>([]);
 
   useEffect(() => {
     setBoxes([{ id: "1", height: 1 }]);
 
     document.addEventListener("mouseup", releaseDrag);
-    /* (document.getElementById("box") as HTMLDivElement).addEventListener("mouseup", releaseDrag); */
   }, []);
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
