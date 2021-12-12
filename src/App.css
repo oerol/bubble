@@ -5,6 +5,22 @@
   border-radius: 7px;
 }
 
+.box {
+  width: 100px;
+  height: 30px;
+  background-color: burlywood;
+  margin-bottom: 3px;
+  border-radius: 7px;
+}
+
+.box-violet {
+  background-color: palevioletred;
+}
+
+#box-holder {
+  display: inline-block;
+}
+
 .ns-resize {
   cursor: ns-resize;
 }
