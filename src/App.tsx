@@ -8,6 +8,9 @@ interface BoxState {
 
 const App: React.FC = () => {
   const [boxes, setBoxes] = useState<BoxState[]>([]);
+  const [isShown, setIsShown] = useState(false); // Context-Menu
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [selectedBox, setSelectedBox] = useState<BoxState>();
 
   useEffect(() => {
     setBoxes([{ id: "1", height: 1 }]);
@@ -49,7 +52,7 @@ const App: React.FC = () => {
     let height = Math.floor(y / 30) + 1;
 
     if (height > getBoxHeight(node.id)) {
-      if (getBoxesHeight() < 30) {
+      if (getBoxesHeight() <= 24) {
         saveBoxWidth(node, height);
         node.style.height = `${height * 30}px`;
       }
@@ -110,8 +113,32 @@ const App: React.FC = () => {
     return currentBox!.height;
   };
 
+  const contextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    const node = e.target as HTMLElement;
+    setSelectedBox(boxes.find((box) => node.id === "box-" + box.id));
+
+    e.preventDefault();
+    setIsShown(false);
+    const newPosition = {
+      x: e.pageX,
+      y: e.pageY,
+    };
+
+    setPosition(newPosition);
+    setIsShown(true);
+  };
+  // Hide the custom context menu
+  const hideContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
+    setIsShown(false);
+  };
+
+  const removeBox = (e: React.MouseEvent<HTMLDivElement>) => {
+    let copyBoxes = [...boxes];
+    copyBoxes = copyBoxes.filter((box) => box !== selectedBox);
+    setBoxes(copyBoxes);
+  };
   return (
-    <div className="App">
+    <div className="App" onClick={hideContextMenu}>
       <div id="box-holder">
         {boxes.map((box, i) => {
           return (
@@ -123,10 +150,18 @@ const App: React.FC = () => {
               onDrag={handleBoxDrag}
               onMouseDown={handleBoxMouseDown}
               onMouseUp={releaseDrag}
+              onContextMenu={contextMenu}
             ></div>
           );
         })}
       </div>
+      {isShown && (
+        <div style={{ top: position.y, left: position.x }} className="custom-context-menu">
+          <div className="option" onClick={removeBox}>
+            Löschen
+          </div>
+        </div>
+      )}
       <button onClick={addBox}>add</button>
     </div>
   );

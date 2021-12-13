@@ -9,12 +9,12 @@
   width: 150px;
   height: 30px;
   background-color: burlywood;
-  margin-bottom: 3px;
   border-radius: 7px;
+  margin-bottom: 3px;
 }
 
 .box:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .box-violet {
@@ -36,4 +36,46 @@
 
 .ns-resize {
   cursor: ns-resize;
+}
+
+#timeline {
+  position: absolute;
+  top: 7px;
+  z-index: -1;
+  height: calc(30px * 25);
+  width: 99vw;
+  background-color: rgb(150, 150, 150);
+  background-image: repeating-linear-gradient(
+    180deg,
+    #f1f1f1,
+    #f1f1f1 2px,
+    #ffffff 2px,
+    #ffffff 32px
+  );
+}
+
+/* Context-Menu */
+.custom-context-menu {
+  position: fixed;
+  z-index: 10;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.option {
+  cursor: pointer;
+
+  padding: 5px 30px;
+}
+
+.option:first-child {
+  border-radius: 5px 5px 0px 0px;
+}
+.option:last-child {
+  border-radius: 0px 0px 5px 5px;
+}
+
+.option:hover {
+  background: rgb(230, 230, 230);
 }
