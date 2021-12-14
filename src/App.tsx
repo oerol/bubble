@@ -78,7 +78,7 @@ const App: React.FC = () => {
 
   const colorBox = (i: number) => {
     let boxClass = "box";
-    switch (i) {
+    switch (i % 10) {
       case 0:
         return boxClass + " box-violet";
       case 1:
