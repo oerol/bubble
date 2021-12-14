@@ -145,7 +145,7 @@ const App: React.FC = () => {
             <div
               key={i}
               id={"box-" + box.id}
-              className={colorBox(i)}
+              className={colorBox(parseInt(box.id))}
               onMouseMove={handleBoxMove}
               onDrag={handleBoxDrag}
               onMouseDown={handleBoxMouseDown}
