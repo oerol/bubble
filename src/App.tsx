@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [selectedBox, setSelectedBox] = useState<BoxState>();
 
   useEffect(() => {
-    setBoxes([{ id: "1", title: "starter", height: 1 }]);
+    setBoxes([{ id: "1", title: "Schlafen", height: 1 }]);
 
     document.addEventListener("mouseup", releaseDrag);
   }, []);
@@ -72,7 +72,10 @@ const App: React.FC = () => {
   const addBox = () => {
     let copyBoxes = [...boxes];
     let newId = String(parseInt(copyBoxes[copyBoxes.length - 1].id) + 1);
-    copyBoxes.push({ id: newId, title: "any", height: 1 });
+
+    let boxTitle = (document.getElementById("new-box-name") as HTMLInputElement).value;
+
+    copyBoxes.push({ id: newId, title: boxTitle, height: 1 });
     setBoxes(copyBoxes);
   };
 
@@ -126,15 +129,32 @@ const App: React.FC = () => {
 
     setPosition(newPosition);
     setIsShown(true);
+    /*let setBoxNameElement = document.getElementById("set-new-name") as HTMLInputElement;
+     setBoxNameElement.value = ""; */
   };
   // Hide the custom context menu
-  const hideContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
-    setIsShown(false);
+  const hideContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    const node = e.target as HTMLInputElement;
+    // Prevent Context-Menu from disappearing when clicking the <input> element
+    if (node.id !== "set-new-name") {
+      setIsShown(false);
+    }
   };
 
   const removeBox = (e: React.MouseEvent<HTMLDivElement>) => {
     let copyBoxes = [...boxes];
     copyBoxes = copyBoxes.filter((box) => box !== selectedBox);
+    setBoxes(copyBoxes);
+  };
+  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const node = e.target as HTMLInputElement;
+    let copyBoxes = [...boxes];
+    let index = copyBoxes.indexOf(selectedBox!);
+    let copySelectedBox = selectedBox;
+    copySelectedBox!.title = node.value;
+
+    setSelectedBox(copySelectedBox);
+    copyBoxes[index] = copySelectedBox!;
     setBoxes(copyBoxes);
   };
   return (
@@ -162,8 +182,17 @@ const App: React.FC = () => {
           <div className="option" onClick={removeBox}>
             Löschen
           </div>
+          <input
+            className="option"
+            type="text"
+            onChange={changeTitle}
+            placeholder="Nicht Schlafen"
+            id="set-new-name"
+            value={selectedBox?.title}
+          />
         </div>
       )}
+      <input type="text" id="new-box-name" placeholder="Schlafen" />
       <button onClick={addBox}>add</button>
     </div>
   );
