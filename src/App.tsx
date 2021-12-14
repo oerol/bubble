@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 interface BoxState {
   id: string;
+  title: string;
   height: number;
 }
 
@@ -13,7 +14,7 @@ const App: React.FC = () => {
   const [selectedBox, setSelectedBox] = useState<BoxState>();
 
   useEffect(() => {
-    setBoxes([{ id: "1", height: 1 }]);
+    setBoxes([{ id: "1", title: "starter", height: 1 }]);
 
     document.addEventListener("mouseup", releaseDrag);
   }, []);
@@ -71,8 +72,7 @@ const App: React.FC = () => {
   const addBox = () => {
     let copyBoxes = [...boxes];
     let newId = String(parseInt(copyBoxes[copyBoxes.length - 1].id) + 1);
-
-    copyBoxes.push({ id: newId, height: 1 });
+    copyBoxes.push({ id: newId, title: "any", height: 1 });
     setBoxes(copyBoxes);
   };
 
@@ -151,7 +151,9 @@ const App: React.FC = () => {
               onMouseDown={handleBoxMouseDown}
               onMouseUp={releaseDrag}
               onContextMenu={contextMenu}
-            ></div>
+            >
+              {box.title}
+            </div>
           );
         })}
       </div>
