@@ -59,7 +59,7 @@ const App: React.FC = () => {
     let height = Math.floor(y / 30) + 1;
 
     if (height > getBoxHeight(node.id)) {
-      if (getBoxesHeight() <= 24) {
+      if (getBoxesHeight() < 24) {
         saveBoxWidth(node, height);
         node.style.height = `${height * 30}px`;
       }
