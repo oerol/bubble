@@ -6,7 +6,13 @@ interface BoxState {
   title: string;
   height: number;
 }
-
+/**
+ * * I was in love in my tutor.
+ * ! Don't kill an innocent soul
+ * ? Is this really worth it
+ * TODO: Prevent add to go over the height limit
+ *
+ */
 const App: React.FC = () => {
   const [boxes, setBoxes] = useState<BoxState[]>([]);
   const [isShown, setIsShown] = useState(false); // Context-Menu
@@ -77,6 +83,8 @@ const App: React.FC = () => {
 
     copyBoxes.push({ id: newId, title: boxTitle, height: 1 });
     setBoxes(copyBoxes);
+
+    document.cookie = JSON.stringify(copyBoxes);
   };
 
   const colorBox = (i: number) => {
@@ -159,41 +167,48 @@ const App: React.FC = () => {
   };
   return (
     <div className="App" onClick={hideContextMenu}>
-      <div id="box-holder">
-        {boxes.map((box, i) => {
-          return (
-            <div
-              key={i}
-              id={"box-" + box.id}
-              className={colorBox(parseInt(box.id))}
-              onMouseMove={handleBoxMove}
-              onDrag={handleBoxDrag}
-              onMouseDown={handleBoxMouseDown}
-              onMouseUp={releaseDrag}
-              onContextMenu={contextMenu}
-            >
-              {box.title}
-            </div>
-          );
-        })}
-      </div>
-      {isShown && (
-        <div style={{ top: position.y, left: position.x }} className="custom-context-menu">
-          <div className="option" onClick={removeBox}>
-            Löschen
+      <div id="main">
+        <div id="left-content">
+          <div id="box-holder">
+            {boxes.map((box, i) => {
+              return (
+                <div
+                  key={i}
+                  id={"box-" + box.id}
+                  className={colorBox(parseInt(box.id))}
+                  onMouseMove={handleBoxMove}
+                  onDrag={handleBoxDrag}
+                  onMouseDown={handleBoxMouseDown}
+                  onMouseUp={releaseDrag}
+                  onContextMenu={contextMenu}
+                >
+                  {box.title}
+                  <span>{box.height}:00</span>
+                </div>
+              );
+            })}
           </div>
-          <input
-            className="option"
-            type="text"
-            onChange={changeTitle}
-            placeholder="Nicht Schlafen"
-            id="set-new-name"
-            value={selectedBox?.title}
-          />
+          {isShown && (
+            <div style={{ top: position.y, left: position.x }} className="custom-context-menu">
+              <div className="option" onClick={removeBox}>
+                Löschen
+              </div>
+              <input
+                className="option"
+                type="text"
+                onChange={changeTitle}
+                placeholder="Nicht Schlafen"
+                id="set-new-name"
+                value={selectedBox?.title}
+              />
+            </div>
+          )}
         </div>
-      )}
-      <input type="text" id="new-box-name" placeholder="Schlafen" />
-      <button onClick={addBox}>add</button>
+        <div id="right-content">
+          <input type="text" id="new-box-name" placeholder="Schlafen" />
+          <button onClick={addBox}>add</button>
+        </div>
+      </div>
     </div>
   );
 };

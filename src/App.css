@@ -14,9 +14,17 @@
   box-sizing: border-box;
   border-left: 5px solid rgba(0, 0, 0, 0.2);
   color: white;
-  padding: 0px 7px;
+  padding: 3px 7px;
   font-family: "Proxima Nova Soft";
   font-weight: 900;
+  position: relative;
+}
+
+.box > span {
+  font-size: 12px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }
 
 .box:hover {
@@ -84,4 +92,31 @@
 
 .option:hover {
   background: rgb(230, 230, 230);
+}
+
+/* main */
+#main {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20px 50px;
+}
+
+#main > div {
+  background-color: #e0e0e0;
+
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 850px;
+}
+
+#left-content {
+  width: 400px;
+}
+
+#right-content {
+  background-color: #d4d4d4;
+  height: 100px;
+  width: 75%;
 }
