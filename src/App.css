@@ -1,3 +1,7 @@
+* {
+  font-family: "Proxima Nova Soft";
+}
+
 #box {
   width: 150px;
   height: 30px;
@@ -15,7 +19,6 @@
   border-left: 5px solid rgba(0, 0, 0, 0.2);
   color: white;
   padding: 3px 7px;
-  font-family: "Proxima Nova Soft";
   font-weight: 900;
   position: relative;
 }
@@ -25,6 +28,7 @@
   position: absolute;
   bottom: 5px;
   right: 5px;
+  pointer-events: none; /* https://stackoverflow.com/questions/18083061/make-element-unclickable-click-things-behind-it */
 }
 
 .box:hover {
@@ -119,4 +123,30 @@
   background-color: #d4d4d4;
   height: 100px;
   width: 75%;
+}
+
+/* input fields */
+
+label {
+  display: block;
+  color: #424242;
+  font-size: 15px;
+}
+
+input {
+  border: 1px solid rgb(161, 161, 161);
+  border-radius: 3px;
+  padding: 10px;
+}
+
+/* button */
+
+button {
+  background-color: rgb(212, 212, 45);
+  border: none;
+  padding: 10px 30px;
+  border-radius: 5px;
+  margin: 0px 10px;
+  cursor: pointer;
+  font-weight: 900;
 }

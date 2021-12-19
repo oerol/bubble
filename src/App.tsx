@@ -205,8 +205,9 @@ const App: React.FC = () => {
           )}
         </div>
         <div id="right-content">
-          <input type="text" id="new-box-name" placeholder="Schlafen" />
-          <button onClick={addBox}>add</button>
+          <label htmlFor="new-box-name">Activity</label>
+          <input type="text" id="new-box-name" placeholder="Heute lerne ich..." />
+          <button onClick={addBox}>Add</button>
         </div>
       </div>
     </div>
