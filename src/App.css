@@ -125,6 +125,19 @@
   width: 75%;
 }
 
+#change-color {
+  display: block;
+  width: 100%;
+}
+
+#change-color > options::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  position: absolute;
+}
+
 /* input fields */
 
 label {

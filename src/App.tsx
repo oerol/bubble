@@ -144,7 +144,7 @@ const App: React.FC = () => {
   const hideContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     const node = e.target as HTMLInputElement;
     // Prevent Context-Menu from disappearing when clicking the <input> element
-    if (node.id !== "set-new-name") {
+    if (!node.classList.contains("stay-active")) {
       setIsShown(false);
     }
   };
@@ -164,6 +164,26 @@ const App: React.FC = () => {
     setSelectedBox(copySelectedBox);
     copyBoxes[index] = copySelectedBox!;
     setBoxes(copyBoxes);
+  };
+
+  const changeColor = (node: HTMLElement, newColor: string) => {
+    for (let className of node.classList as any) {
+      if (className.includes("box-")) {
+        node.classList.remove(className);
+      }
+    }
+    node.classList.add("box-" + newColor);
+  };
+
+  const setColor = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    let node = document.getElementById("box-" + selectedBox!.id);
+    for (let className of node!.classList as any) {
+      if (className.includes("box-")) {
+        console.log(className);
+        node!.classList.remove(className);
+      }
+    }
+    node!.classList.add("box-" + e.target.value);
   };
   return (
     <div className="App" onClick={hideContextMenu}>
@@ -194,13 +214,20 @@ const App: React.FC = () => {
                 Löschen
               </div>
               <input
-                className="option"
+                className="option stay-active"
                 type="text"
                 onChange={changeTitle}
                 placeholder="Nicht Schlafen"
                 id="set-new-name"
                 value={selectedBox?.title}
               />
+              <select className="option stay-active" id="change-color" onChange={setColor}>
+                <option value="blue">blue</option>
+                <option value="orange">orange</option>
+                <option value="red">red</option>
+                <option value="grey">grey</option>
+                <option value="green">green</option>
+              </select>
             </div>
           )}
         </div>
