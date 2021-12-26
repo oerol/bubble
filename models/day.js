@@ -6,6 +6,13 @@ const daySchema = new Schema({
     type: Number,
     required: true,
   },
+  bubbles: [
+    {
+      height: Number,
+      id: String,
+      title: String,
+    },
+  ],
 });
 
 const Day = mongoose.model("Day", daySchema);

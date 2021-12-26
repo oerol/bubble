@@ -1,6 +1,8 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 
+import axios from "axios";
+
 interface BoxState {
   id: string;
   title: string;
@@ -85,6 +87,8 @@ const App: React.FC = () => {
     setBoxes(copyBoxes);
 
     document.cookie = JSON.stringify(copyBoxes);
+
+    getData();
   };
 
   const colorBox = (i: number) => {
@@ -185,6 +189,32 @@ const App: React.FC = () => {
     }
     node!.classList.add("box-" + e.target.value);
   };
+
+  const getData = () => {
+    axios
+      .get("http://localhost:3001/all-days")
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+      })
+      .catch(() => {
+        console.log("Fehler getData");
+      });
+  };
+  const saveData = () => {
+    axios
+      .post("http://localhost:3001/day", {
+        weekday: 2,
+        bubbles: boxes,
+      })
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+      })
+      .catch(() => {
+        console.log("Fehler getData");
+      });
+  };
   return (
     <div className="App" onClick={hideContextMenu}>
       <div id="main">
@@ -235,6 +265,8 @@ const App: React.FC = () => {
           <label htmlFor="new-box-name">Activity</label>
           <input type="text" id="new-box-name" placeholder="Heute lerne ich..." />
           <button onClick={addBox}>Add</button>
+          <button onClick={getData}>get data</button>
+          <button onClick={saveData}>save data</button>
         </div>
       </div>
     </div>

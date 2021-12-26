@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Day = require("./models/day");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const dbURI =
   "mongodb+srv://oerol:bubble@bubble-server.fd9w7.mongodb.net/bubble?retryWrites=true&w=majority";
 mongoose
@@ -9,10 +11,14 @@ mongoose
   .catch((error) => console.log(error));
 
 const app = express();
+app.use(cors());
+app.use(bodyParser.json());
 
-app.get("/day", (req, res) => {
+app.post("/day", (req, res) => {
+  console.log(req);
   const day = new Day({
-    weekday: 2,
+    weekday: req.body.weekday,
+    bubbles: req.body.bubbles,
   });
 
   day
