@@ -25,6 +25,9 @@ const App: React.FC = () => {
     setBoxes([{ id: "1", title: "Schlafen", height: 1 }]);
 
     document.addEventListener("mouseup", releaseDrag);
+
+    // get data
+    getDay(2);
   }, []);
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -215,6 +218,19 @@ const App: React.FC = () => {
         console.log("Fehler getData");
       });
   };
+
+  const getDay = (weekday: number) => {
+    axios
+      .get("http://localhost:3001/get-day/" + weekday)
+      .then((response) => {
+        const data = response.data;
+        console.log(data[0].bubbles);
+        setBoxes(data[0].bubbles);
+      })
+      .catch(() => {
+        console.log("Fehler getData");
+      });
+  };
   return (
     <div className="App" onClick={hideContextMenu}>
       <div id="main">
@@ -231,6 +247,7 @@ const App: React.FC = () => {
                   onMouseDown={handleBoxMouseDown}
                   onMouseUp={releaseDrag}
                   onContextMenu={contextMenu}
+                  style={{ height: box.height * 30 + "px" }}
                 >
                   {box.title}
                   <span>{box.height}:00</span>

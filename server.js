@@ -40,8 +40,10 @@ app.get("/all-days", (req, res) => {
       console.log(error);
     });
 });
-app.get("/get-day", (req, res) => {
-  Day.find({ weekday: 3 }).then((result) => {
+
+app.get("/get-day/:id", (req, res) => {
+  let passedWeekday = parseInt(req.params.id);
+  Day.find({ weekday: passedWeekday }).then((result) => {
     res.send(result);
   });
 });
