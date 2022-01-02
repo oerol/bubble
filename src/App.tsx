@@ -7,6 +7,7 @@ interface BoxState {
   id: string;
   title: string;
   height: number;
+  color: string;
 }
 /**
  * * I was in love in my tutor.
@@ -22,12 +23,12 @@ const App: React.FC = () => {
   const [selectedBox, setSelectedBox] = useState<BoxState>();
 
   useEffect(() => {
-    setBoxes([{ id: "1", title: "Schlafen", height: 1 }]);
+    setBoxes([{ id: "1", title: "Schlafen", height: 1, color: "green" }]);
 
     document.addEventListener("mouseup", releaseDrag);
 
     // get data
-    getDay(2);
+    getDay(0);
   }, []);
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -61,16 +62,16 @@ const App: React.FC = () => {
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     document.body.style.cursor = "ns-resize";
-    let height = Math.floor(y / 30) + 1;
+    let height = Math.floor(y / 20) + 1;
 
     if (height > getBoxHeight(node.id)) {
-      if (getBoxesHeight() < 24) {
+      if (getBoxesHeight() < 36) {
         saveBoxWidth(node, height);
-        node.style.height = `${height * 30}px`;
+        node.style.height = `${height * 20}px`;
       }
     } else if (height > 0) {
       saveBoxWidth(node, height);
-      node.style.height = `${height * 30}px`;
+      node.style.height = `${height * 20}px`;
     }
   };
 
@@ -86,7 +87,7 @@ const App: React.FC = () => {
 
     let boxTitle = (document.getElementById("new-box-name") as HTMLInputElement).value;
 
-    copyBoxes.push({ id: newId, title: boxTitle, height: 1 });
+    copyBoxes.push({ id: newId, title: boxTitle, height: 1, color: "" });
     setBoxes(copyBoxes);
 
     document.cookie = JSON.stringify(copyBoxes);
@@ -94,20 +95,10 @@ const App: React.FC = () => {
     getData();
   };
 
-  const colorBox = (i: number) => {
+  const colorBox = (color: string) => {
     let boxClass = "box";
-    switch (i % 10) {
-      case 0:
-        return boxClass + " box-violet";
-      case 1:
-        return boxClass + " box-orange";
-      case 2:
-        return boxClass + " box-teal";
-      case 3:
-        return boxClass + " box-green";
-      default:
-        return boxClass;
-    }
+
+    return boxClass + " " + color;
   };
 
   const saveBoxWidth = (node: HTMLElement, height: number) => {
@@ -173,24 +164,21 @@ const App: React.FC = () => {
     setBoxes(copyBoxes);
   };
 
-  const changeColor = (node: HTMLElement, newColor: string) => {
-    for (let className of node.classList as any) {
-      if (className.includes("box-")) {
-        node.classList.remove(className);
-      }
-    }
-    node.classList.add("box-" + newColor);
-  };
-
   const setColor = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let node = document.getElementById("box-" + selectedBox!.id);
+    let newColor = "box-" + e.target.value;
     for (let className of node!.classList as any) {
       if (className.includes("box-")) {
         console.log(className);
         node!.classList.remove(className);
       }
     }
-    node!.classList.add("box-" + e.target.value);
+    node!.classList.add(newColor);
+
+    let copyBoxes = [...boxes];
+    let currentBoxIndex = copyBoxes.findIndex((element) => element.id === selectedBox!.id);
+    copyBoxes[currentBoxIndex].color = newColor;
+    setBoxes(copyBoxes);
   };
 
   const getData = () => {
@@ -205,9 +193,10 @@ const App: React.FC = () => {
       });
   };
   const saveData = () => {
+    let date = new Date();
     axios
       .post("http://localhost:3001/day", {
-        weekday: 2,
+        weekday: date.getDay(),
         bubbles: boxes,
       })
       .then((response) => {
@@ -224,12 +213,16 @@ const App: React.FC = () => {
       .get("http://localhost:3001/get-day/" + weekday)
       .then((response) => {
         const data = response.data;
-        console.log(data[0].bubbles);
-        setBoxes(data[0].bubbles);
+        console.log(data[data.length - 1].bubbles);
+        setBoxes(data[data.length - 1].bubbles);
       })
       .catch(() => {
         console.log("Fehler getData");
       });
+  };
+  const getBoxTime = (height: number) => {
+    let hours = Math.floor(height / 2);
+    return height % 2 === 0 ? `${hours}:00` : `${hours}:30`;
   };
   return (
     <div className="App" onClick={hideContextMenu}>
@@ -241,16 +234,16 @@ const App: React.FC = () => {
                 <div
                   key={i}
                   id={"box-" + box.id}
-                  className={colorBox(parseInt(box.id))}
+                  className={colorBox(box.color)}
                   onMouseMove={handleBoxMove}
                   onDrag={handleBoxDrag}
                   onMouseDown={handleBoxMouseDown}
                   onMouseUp={releaseDrag}
                   onContextMenu={contextMenu}
-                  style={{ height: box.height * 30 + "px" }}
+                  style={{ height: box.height * 20 + "px" }}
                 >
                   {box.title}
-                  <span>{box.height}:00</span>
+                  <span>{getBoxTime(box.height)}</span>
                 </div>
               );
             })}
@@ -274,6 +267,7 @@ const App: React.FC = () => {
                 <option value="red">red</option>
                 <option value="grey">grey</option>
                 <option value="green">green</option>
+                <option value="gray">gray</option>
               </select>
             </div>
           )}

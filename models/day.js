@@ -11,6 +11,7 @@ const daySchema = new Schema({
       height: Number,
       id: String,
       title: String,
+      color: String,
     },
   ],
 });

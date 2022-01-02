@@ -4,31 +4,35 @@
 
 #box {
   width: 150px;
-  height: 30px;
+  height: 20px;
   background-color: burlywood;
   border-radius: 7px;
 }
 
 .box {
+  user-select: none;
+
   width: 150px;
-  height: 30px;
+  height: 20px;
   background-color: burlywood;
   border-radius: 7px;
   margin-bottom: 3px;
   box-sizing: border-box;
   border-left: 5px solid rgba(0, 0, 0, 0.2);
   color: white;
-  padding: 3px 7px;
+  padding: 2px 7px;
   font-weight: 900;
   position: relative;
+  font-size: 13px;
 }
 
 .box > span {
   font-size: 12px;
   position: absolute;
-  bottom: 5px;
+  bottom: 2px;
   right: 5px;
   pointer-events: none; /* https://stackoverflow.com/questions/18083061/make-element-unclickable-click-things-behind-it */
+  font-weight: 100;
 }
 
 .box:hover {
@@ -46,6 +50,15 @@
 }
 .box-green {
   background-color: olivedrab;
+}
+.box-gray {
+  background-color: gainsboro;
+}
+.box-blue {
+  background-color: lightblue;
+}
+.box-red {
+  background-color: lightcoral;
 }
 
 #box-holder {

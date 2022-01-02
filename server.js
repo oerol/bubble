@@ -15,7 +15,6 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post("/day", (req, res) => {
-  console.log(req);
   const day = new Day({
     weekday: req.body.weekday,
     bubbles: req.body.bubbles,
@@ -27,7 +26,7 @@ app.post("/day", (req, res) => {
       res.send(result);
     })
     .catch((error) => {
-      console.log(error);
+      console.log("fehler");
     });
 });
 
@@ -37,7 +36,7 @@ app.get("/all-days", (req, res) => {
       res.send(result);
     })
     .catch((error) => {
-      console.log(error);
+      console.log("error");
     });
 });
 
