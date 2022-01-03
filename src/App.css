@@ -62,7 +62,8 @@
 }
 
 #box-holder {
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
 }
 
 .ns-resize {

@@ -19,7 +19,8 @@ const App: React.FC = () => {
         <div id="left-content">
           <CurrentDate />
           <div id="box-holder">
-            <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} />
+            <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={true} />
+            <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={false} />
           </div>
         </div>
         <div id="right-content">

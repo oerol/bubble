@@ -13,9 +13,14 @@ interface BoxState {
 
 type DayPlannerProps = {
   contextMenuVisible: boolean;
+  planned: boolean;
   showContextMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const DayPlanner: React.FC<DayPlannerProps> = ({ contextMenuVisible, showContextMenu }) => {
+const DayPlanner: React.FC<DayPlannerProps> = ({
+  contextMenuVisible,
+  planned,
+  showContextMenu,
+}) => {
   const [boxes, setBoxes] = useState<BoxState[]>([]);
   const [isShown, setIsShown] = useState(false); // Context-Menu
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -23,7 +28,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({ contextMenuVisible, showContext
 
   useEffect(() => {
     document.addEventListener("mouseup", releaseDrag);
-    getDay(0);
+    getDay(1);
     console.log(showContextMenu);
   }, []);
 
@@ -190,6 +195,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({ contextMenuVisible, showContext
       .post("http://localhost:3001/day", {
         weekday: date.getDay(),
         bubbles: boxes,
+        planned: planned,
       })
       .then((response) => {
         const data = response.data;
@@ -201,16 +207,30 @@ const DayPlanner: React.FC<DayPlannerProps> = ({ contextMenuVisible, showContext
   };
 
   const getDay = (weekday: number) => {
-    axios
-      .get("http://localhost:3001/get-day/" + weekday)
-      .then((response) => {
-        const data = response.data;
-        console.log(data[data.length - 1].bubbles);
-        setBoxes(data[data.length - 1].bubbles);
-      })
-      .catch(() => {
-        console.log("Fehler getData");
-      });
+    if (planned) {
+      axios
+        .get("http://localhost:3001/get-day/" + weekday)
+        .then((response) => {
+          const data = response.data;
+          console.log(data[data.length - 1].bubbles);
+          setBoxes(data[data.length - 1].bubbles);
+        })
+        .catch(() => {
+          console.log("Fehler getData");
+        });
+    } else {
+      axios
+        .get("http://localhost:3001/get-actual-day/" + weekday)
+        .then((response) => {
+          const data = response.data;
+          console.log(data);
+          console.log(data[data.length - 1].bubbles);
+          setBoxes(data[data.length - 1].bubbles);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   };
   const getBoxTime = (height: number) => {
     let hours = Math.floor(height / 2);
@@ -235,6 +255,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({ contextMenuVisible, showContext
           </div>
         );
       })}
+      <div onClick={saveData}>+</div>
 
       {contextMenuVisible && (
         <div style={{ top: position.y, left: position.x }} className="custom-context-menu">
