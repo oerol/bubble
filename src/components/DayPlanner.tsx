@@ -3,6 +3,7 @@ import React, { SetStateAction, useEffect, useState } from "react";
 
 import axios from "axios";
 import { setConstantValue } from "typescript";
+import { start } from "repl";
 
 interface BoxState {
   id: string;
@@ -26,7 +27,13 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [selectedBox, setSelectedBox] = useState<BoxState>();
 
+  const startTime = 8;
+
   useEffect(() => {
+    setBoxes([
+      { id: "1", color: "red", height: 2, title: "SLEEP" },
+      { id: "2", color: "red", height: 2, title: "EAT" },
+    ]);
     document.addEventListener("mouseup", releaseDrag);
     getDay(1);
     console.log(showContextMenu);
@@ -64,7 +71,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     let height = Math.floor(y / 20) + 1;
 
     if (height > getBoxHeight(node.id)) {
-      if (getBoxesHeight() < 36) {
+      if (getBoxesHeight() < 32) {
         saveBoxWidth(node, height);
         node.style.height = `${height * 20}px`;
       }
@@ -112,7 +119,6 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     for (let box of boxes) {
       height += box.height;
     }
-    console.log(height);
     return height;
   };
 
@@ -236,6 +242,28 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     let hours = Math.floor(height / 2);
     return height % 2 === 0 ? `${hours}:00` : `${hours}:30`;
   };
+  const getBoxDuration = (id: number) => {
+    let heightSum = 0;
+    for (let i = 0; i < id; i++) {
+      heightSum += boxes[i].height;
+    }
+    let startBox = startTime + heightSum * 0.5;
+    let endBox = startBox + boxes[id].height * 0.5;
+    let startBoxText, endBoxText;
+    if (endBox % 1 === 0) {
+      endBoxText = endBox + ":00";
+    } else {
+      endBoxText = Math.floor(endBox) + ":30";
+    }
+
+    console.log(startBox, startBoxText);
+    startBox % 1 === 0
+      ? (startBoxText = startBox + ":00")
+      : (startBoxText = Math.floor(startBox) + ":30");
+
+    console.log(startBox, startBoxText);
+    return `${startBoxText} - ${endBoxText}`;
+  };
   return (
     <div className="App" onClick={hideContextMenu}>
       {boxes.map((box, i) => {
@@ -251,7 +279,8 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
             style={{ height: box.height * 20 + "px" }}
           >
             {box.title}
-            <span>{getBoxTime(box.height)}</span>
+            <span className="box-time-length">{getBoxTime(box.height)}</span>
+            {box.height > 1 && <span className="box-time">{getBoxDuration(i)}</span>}
           </div>
         );
       })}
@@ -276,6 +305,8 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
             <option value="red">red</option>
             <option value="green">green</option>
             <option value="gray">gray</option>
+            <option value="purple">purple</option>
+            <option value="yellow">yellow</option>
           </select>
         </div>
       )}

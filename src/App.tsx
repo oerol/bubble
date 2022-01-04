@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import DayPlanner from "./components/DayPlanner";
 import CurrentDate from "./components/CurrentDate";
+import Task from "./components/Task";
 
 const App: React.FC = () => {
   const [isShown, setIsShown] = useState(false); // Context-Menu
@@ -16,20 +17,26 @@ const App: React.FC = () => {
   return (
     <div className="App" onClick={hideContextMenu}>
       <div id="main">
-        <div id="left-content">
-          <CurrentDate />
-          <div id="box-holder">
-            <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={true} />
-            <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={false} />
-          </div>
+        <CurrentDate />
+
+        <div id="planned-day">
+          <span>Your Plan for Today:</span>
+          <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={true} />
         </div>
-        <div id="right-content">
+        <div id="actual-day">
+          <span>Your Day so far:</span>
+          <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={false} />
+        </div>
+        <div id="tasks">
+          <Task />
+        </div>
+        {/*         <div id="right-content">
           <label htmlFor="new-box-name">Activity</label>
           <input type="text" id="new-box-name" placeholder="Heute lerne ich..." />
-          {/*           <button onClick={addBox}>Add</button>
+                     <button onClick={addBox}>Add</button>
           <button onClick={getData}>get data</button>
-          <button onClick={saveData}>save data</button> */}
-        </div>
+          <button onClick={saveData}>save data</button> 
+        </div> */}
       </div>
     </div>
   );

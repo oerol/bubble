@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import Folder from "../folder.png";
+import "../App.css";
 
 const CurrentDate = () => {
   const [weekday, setWeekday] = useState("");
   const [day, setDay] = useState(0);
+  const [wakeupTime, setWakeupTime] = useState("| Wake-Up Time: 08:00");
   const weekdays = ["Sunday", "Monday"];
   useEffect(() => {
     let day = new Date();
@@ -13,8 +16,12 @@ const CurrentDate = () => {
   });
 
   return (
-    <div style={{ marginBottom: 5 }}>
-      <span style={{ fontWeight: "900" }}>{weekday}</span> <span>{day}</span>
+    <div className="day-overview" style={{ marginBottom: 20 }}>
+      <img src={Folder} style={{ width: 100 }} alt="" />
+      <div>
+        <span style={{ fontWeight: "900" }}>{weekday}</span> <span>{day}</span>{" "}
+        <span>{wakeupTime}</span>
+      </div>
     </div>
   );
 };

@@ -2,17 +2,10 @@
   font-family: "Proxima Nova Soft";
 }
 
-#box {
-  width: 150px;
-  height: 20px;
-  background-color: burlywood;
-  border-radius: 7px;
-}
-
 .box {
   user-select: none;
 
-  width: 150px;
+  width: 200px;
   height: 20px;
   background-color: burlywood;
   border-radius: 7px;
@@ -26,7 +19,7 @@
   font-size: 13px;
 }
 
-.box > span {
+.box-time-length {
   font-size: 12px;
   position: absolute;
   bottom: 2px;
@@ -34,56 +27,36 @@
   pointer-events: none; /* https://stackoverflow.com/questions/18083061/make-element-unclickable-click-things-behind-it */
   font-weight: 100;
 }
-
-.box:hover {
-  opacity: 0.6;
+.box-time {
+  font-size: 12px;
+  position: absolute;
+  bottom: 2px;
+  left: 5px;
+  pointer-events: none; /* https://stackoverflow.com/questions/18083061/make-element-unclickable-click-things-behind-it */
+  font-weight: 100;
 }
 
-.box-violet {
-  background-color: palevioletred;
-}
-.box-orange {
-  background-color: goldenrod;
-}
-.box-teal {
-  background-color: teal;
-}
-.box-green {
-  background-color: olivedrab;
-}
-.box-gray {
-  background-color: gainsboro;
-}
-.box-blue {
-  background-color: lightblue;
-}
-.box-red {
-  background-color: lightcoral;
+#planned-day,
+#actual-day {
+  background-color: #94c8d1;
+  border-radius: 5px;
 }
 
-#box-holder {
-  display: flex;
-  justify-content: space-between;
+#planned-day > span,
+#actual-day > span {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: 900;
+  color: white;
+}
+
+.day-overview {
+  background-color: rgb(255, 142, 142);
+  height: 150px;
 }
 
 .ns-resize {
   cursor: ns-resize;
-}
-
-#timeline {
-  position: absolute;
-  top: 7px;
-  z-index: -1;
-  height: calc(30px * 25);
-  width: 99vw;
-  background-color: rgb(150, 150, 150);
-  background-image: repeating-linear-gradient(
-    180deg,
-    #f1f1f1,
-    #f1f1f1 2px,
-    #ffffff 2px,
-    #ffffff 32px
-  );
 }
 
 /* Context-Menu */
@@ -115,28 +88,25 @@
 /* main */
 #main {
   display: flex;
-  justify-content: space-between;
   box-sizing: border-box;
   padding: 20px 50px;
 }
 
 #main > div {
-  background-color: #e0e0e0;
-
   border-radius: 10px;
   box-sizing: border-box;
-  padding: 10px;
-  height: 850px;
+  padding: 10px 20px;
+  margin-right: 50px;
 }
 
 #left-content {
-  width: 400px;
+  width: 450px;
 }
 
 #right-content {
   background-color: #d4d4d4;
   height: 100px;
-  width: 75%;
+  width: 65%;
 }
 
 #change-color {
@@ -163,7 +133,7 @@ label {
 input {
   border: 1px solid rgb(161, 161, 161);
   border-radius: 3px;
-  padding: 10px;
+  margin: 0 5px;
 }
 
 /* button */
@@ -171,9 +141,65 @@ input {
 button {
   background-color: rgb(212, 212, 45);
   border: none;
-  padding: 10px 30px;
+  padding: 3px 20px;
   border-radius: 5px;
-  margin: 0px 10px;
   cursor: pointer;
   font-weight: 900;
+}
+
+.box:hover {
+  opacity: 0.6;
+}
+
+.box-violet {
+  background-color: palevioletred;
+}
+.box-orange {
+  background-color: goldenrod;
+}
+.box-teal {
+  background-color: teal;
+}
+.box-green {
+  background-color: #8ed385;
+}
+.box-gray {
+  background-color: gainsboro;
+}
+.box-blue {
+  background-color: rgb(122, 178, 197);
+}
+.box-red {
+  background-color: lightcoral;
+}
+.box-yellow {
+  background-color: #fedb00;
+}
+.box-purple {
+  background-color: #d078ff;
+}
+
+.tasks-overview {
+}
+
+.task {
+  background-color: #8ed385;
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin-bottom: 2px;
+  position: relative;
+}
+
+.task > span {
+  position: absolute;
+  right: 5px;
+  top: 1px;
+  cursor: pointer;
+}
+#tasks {
+  box-sizing: border-box;
+  padding: 0px;
+  background-color: #94c8d1;
+  padding: 10px;
+  border-radius: 10px;
 }
