@@ -26,6 +26,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
   const [isShown, setIsShown] = useState(false); // Context-Menu
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [selectedBox, setSelectedBox] = useState<BoxState>();
+  const [activeBox, setActiveBox] = useState("");
 
   const startTime = 8;
 
@@ -264,6 +265,25 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     console.log(startBox, startBoxText);
     return `${startBoxText} - ${endBoxText}`;
   };
+
+  const activateBox = (e: React.MouseEvent<HTMLDivElement>) => {
+    let node = e.target as HTMLDivElement;
+
+    if (node.id === activeBox) {
+      setActiveBox("");
+    }
+    let boxElement = document.getElementById(activeBox);
+
+    if (boxElement) {
+      boxElement.classList.remove("box-active");
+      if (boxElement.id === node.id) {
+        setActiveBox("");
+        return;
+      }
+    }
+    setActiveBox(node.id);
+    node.classList.add("box-active");
+  };
   return (
     <div className="App" onClick={hideContextMenu}>
       {boxes.map((box, i) => {
@@ -276,6 +296,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
             onMouseDown={handleBoxMouseDown}
             onMouseUp={releaseDrag}
             onContextMenu={contextMenu}
+            onClick={activateBox}
             style={{ height: box.height * 20 + "px" }}
           >
             {box.title}

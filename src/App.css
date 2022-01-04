@@ -4,7 +4,6 @@
 
 .box {
   user-select: none;
-
   width: 200px;
   height: 20px;
   background-color: burlywood;
@@ -17,6 +16,14 @@
   font-weight: 900;
   position: relative;
   font-size: 13px;
+  transition: 0.3s ease-in-out background-color, 0.5s ease-in-out height;
+}
+
+.box-active {
+  transition: 0.3s ease-in-out;
+  border-left: 5px solid rgb(0, 0, 0);
+  background-color: white !important;
+  color: black;
 }
 
 .box-time-length {
