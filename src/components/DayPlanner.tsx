@@ -16,11 +16,13 @@ type DayPlannerProps = {
   contextMenuVisible: boolean;
   planned: boolean;
   showContextMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  globalActiveBox: React.Dispatch<React.SetStateAction<string>>;
 };
 const DayPlanner: React.FC<DayPlannerProps> = ({
   contextMenuVisible,
   planned,
   showContextMenu,
+  globalActiveBox,
 }) => {
   const [boxes, setBoxes] = useState<BoxState[]>([]);
   const [isShown, setIsShown] = useState(false); // Context-Menu
@@ -37,7 +39,6 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     ]);
     document.addEventListener("mouseup", releaseDrag);
     getDay(1);
-    console.log(showContextMenu);
   }, []);
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -173,7 +174,6 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     let newColor = "box-" + e.target.value;
     for (let className of node!.classList as any) {
       if (className.includes("box-")) {
-        console.log(className);
         node!.classList.remove(className);
       }
     }
@@ -190,7 +190,6 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
       .get("http://localhost:3001/all-days")
       .then((response) => {
         const data = response.data;
-        console.log(data);
       })
       .catch(() => {
         console.log("Fehler getData");
@@ -206,7 +205,6 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
       })
       .then((response) => {
         const data = response.data;
-        console.log(data);
       })
       .catch(() => {
         console.log("Fehler getData");
@@ -219,7 +217,6 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
         .get("http://localhost:3001/get-day/" + weekday)
         .then((response) => {
           const data = response.data;
-          console.log(data[data.length - 1].bubbles);
           setBoxes(data[data.length - 1].bubbles);
         })
         .catch(() => {
@@ -230,8 +227,6 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
         .get("http://localhost:3001/get-actual-day/" + weekday)
         .then((response) => {
           const data = response.data;
-          console.log(data);
-          console.log(data[data.length - 1].bubbles);
           setBoxes(data[data.length - 1].bubbles);
         })
         .catch((e) => {
@@ -257,16 +252,14 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
       endBoxText = Math.floor(endBox) + ":30";
     }
 
-    console.log(startBox, startBoxText);
     startBox % 1 === 0
       ? (startBoxText = startBox + ":00")
       : (startBoxText = Math.floor(startBox) + ":30");
 
-    console.log(startBox, startBoxText);
     return `${startBoxText} - ${endBoxText}`;
   };
 
-  const activateBox = (e: React.MouseEvent<HTMLDivElement>) => {
+  const highlightBox = (e: React.MouseEvent<HTMLDivElement>) => {
     let node = e.target as HTMLDivElement;
 
     if (node.id === activeBox) {
@@ -278,10 +271,12 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
       boxElement.classList.remove("box-active");
       if (boxElement.id === node.id) {
         setActiveBox("");
+        globalActiveBox("");
         return;
       }
     }
     setActiveBox(node.id);
+    globalActiveBox(node.id);
     node.classList.add("box-active");
   };
   return (
@@ -296,7 +291,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
             onMouseDown={handleBoxMouseDown}
             onMouseUp={releaseDrag}
             onContextMenu={contextMenu}
-            onClick={activateBox}
+            onClick={highlightBox}
             style={{ height: box.height * 20 + "px" }}
           >
             {box.title}

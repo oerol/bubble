@@ -6,6 +6,7 @@ import Task from "./components/Task";
 
 const App: React.FC = () => {
   const [isShown, setIsShown] = useState(false); // Context-Menu
+  const [activeBox, setActiveBox] = useState("");
   const hideContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     const node = e.target as HTMLInputElement;
     // Prevent Context-Menu from disappearing when clicking the <input> element
@@ -21,14 +22,24 @@ const App: React.FC = () => {
 
         <div id="planned-day">
           <span>Your Plan for Today:</span>
-          <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={true} />
+          <DayPlanner
+            contextMenuVisible={isShown}
+            showContextMenu={setIsShown}
+            planned={true}
+            globalActiveBox={setActiveBox}
+          />
         </div>
         <div id="actual-day">
           <span>Your Day so far:</span>
-          <DayPlanner contextMenuVisible={isShown} showContextMenu={setIsShown} planned={false} />
+          <DayPlanner
+            contextMenuVisible={isShown}
+            showContextMenu={setIsShown}
+            planned={false}
+            globalActiveBox={setActiveBox}
+          />
         </div>
         <div id="tasks">
-          <Task />
+          <Task activeBox={activeBox} />
         </div>
         {/*         <div id="right-content">
           <label htmlFor="new-box-name">Activity</label>

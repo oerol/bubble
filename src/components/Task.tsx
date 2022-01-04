@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 
+interface TaskProps {
+  activeBox: string;
+}
+
 interface TaskState {
   bubble: string;
   id: number;
@@ -8,12 +12,12 @@ interface TaskState {
   checked: boolean;
 }
 
-const Task: React.FC = () => {
+const Task: React.FC<TaskProps> = ({ activeBox }) => {
   const [tasks, setTasks] = useState<TaskState[]>([]);
   useEffect(() => {
     setTasks([
-      { bubble: "", id: 1, title: "kill sponge", checked: false },
-      { bubble: "", id: 2, title: "kill pat", checked: false },
+      { bubble: "box-2", id: 1, title: "kill sponge", checked: false },
+      { bubble: "box-3", id: 2, title: "kill pat", checked: false },
     ]);
   }, []);
   const addTask = () => {
@@ -36,10 +40,12 @@ const Task: React.FC = () => {
       <div>
         {tasks.map((task) => {
           return (
-            <div className="task">
-              {task.title}{" "}
-              <span onClick={() => checkChecked(task.id)}>{task.checked ? "x" : "o"}</span>
-            </div>
+            task.bubble === activeBox && (
+              <div className="task">
+                {task.title}{" "}
+                <span onClick={() => checkChecked(task.id)}>{task.checked ? "x" : "o"}</span>
+              </div>
+            )
           );
         })}
       </div>
