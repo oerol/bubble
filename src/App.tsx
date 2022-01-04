@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import DayPlanner from "./components/DayPlanner";
 import CurrentDate from "./components/CurrentDate";
 import Task from "./components/Task";
+import Header from "./components/Header";
 
 const App: React.FC = () => {
   const [isShown, setIsShown] = useState(false); // Context-Menu
@@ -17,6 +18,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App" onClick={hideContextMenu}>
+      <Header />
       <div id="main">
         <CurrentDate />
 

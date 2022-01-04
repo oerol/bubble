@@ -1,0 +1,17 @@
+header {
+  display: flex;
+  padding: 10px 30px;
+  font-family: "Candy Beans" !important;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+img {
+  margin-right: 20px;
+}
+h1 {
+  color: rgb(51, 51, 51);
+}
+@font-face {
+  font-family: Candy Beans;
+  src: url("../Candy\ Beans.otf");
+}

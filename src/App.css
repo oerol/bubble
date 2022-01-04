@@ -1,5 +1,9 @@
-* {
+#main {
   font-family: "Proxima Nova Soft";
+}
+
+body {
+  background-color: #e2ded9;
 }
 
 .box {
