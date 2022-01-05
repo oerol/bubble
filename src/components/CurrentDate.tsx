@@ -6,7 +6,7 @@ const CurrentDate = () => {
   const [weekday, setWeekday] = useState("");
   const [day, setDay] = useState(0);
   const [wakeupTime, setWakeupTime] = useState("| Wake-Up Time: 08:00");
-  const weekdays = ["Sunday", "Monday"];
+  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   useEffect(() => {
     let day = new Date();
     let weekday = weekdays[day.getDay()];
@@ -17,7 +17,6 @@ const CurrentDate = () => {
 
   return (
     <div className="day-overview" style={{ marginBottom: 20 }}>
-      <img src={Folder} style={{ width: 100 }} alt="" />
       <div>
         <span style={{ fontWeight: "900" }}>{weekday}</span> <span>{day}</span>{" "}
         <span>{wakeupTime}</span>

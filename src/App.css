@@ -1,20 +1,23 @@
 #main {
   font-family: "Proxima Nova Soft";
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin: 50px 100px;
 }
 
 body {
-  background-color: #e2ded9;
+  background-color: #f8f5f4;
 }
 
 .box {
   user-select: none;
   width: 200px;
   height: 20px;
-  background-color: burlywood;
+  background-color: rgb(73, 68, 68);
   border-radius: 7px;
   margin-bottom: 3px;
   box-sizing: border-box;
-  border-left: 5px solid rgba(0, 0, 0, 0.2);
+  border-left: 5px solid rgb(255, 255, 255);
   color: white;
   padding: 2px 7px;
   font-weight: 900;
@@ -25,7 +28,7 @@ body {
 
 .box-active {
   transition: 0.3s ease-in-out;
-  border-left: 5px solid rgb(0, 0, 0);
+  border-left: 5px solid rgb(0, 0, 0) !important;
   background-color: white !important;
   color: black;
 }
@@ -49,7 +52,6 @@ body {
 
 #planned-day,
 #actual-day {
-  background-color: #94c8d1;
   border-radius: 5px;
 }
 
@@ -58,12 +60,6 @@ body {
   display: inline-block;
   margin-bottom: 5px;
   font-weight: 900;
-  color: white;
-}
-
-.day-overview {
-  background-color: rgb(255, 142, 142);
-  height: 150px;
 }
 
 .ns-resize {
@@ -159,10 +155,10 @@ button {
 }
 
 .box:hover {
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
-.box-violet {
+/* .box-violet {
   background-color: palevioletred;
 }
 .box-orange {
@@ -189,7 +185,34 @@ button {
 .box-purple {
   background-color: #d078ff;
 }
-
+ */
+.box-violet {
+  border-left: 5px solid palevioletred;
+}
+.box-orange {
+  border-left: 5px solid goldenrod;
+}
+.box-teal {
+  border-left: 5px solid teal;
+}
+.box-green {
+  border-left: 5px solid #8ed385;
+}
+.box-gray {
+  border-left: 5px solid gainsboro;
+}
+.box-blue {
+  border-left: 5px solid rgb(122, 178, 197);
+}
+.box-red {
+  border-left: 5px solid lightcoral;
+}
+.box-yellow {
+  border-left: 5px solid #fedb00;
+}
+.box-purple {
+  border-left: 5px solid #d078ff;
+}
 .tasks-overview {
 }
 
@@ -210,7 +233,6 @@ button {
 #tasks {
   box-sizing: border-box;
   padding: 0px;
-  background-color: #94c8d1;
   padding: 10px;
   border-radius: 10px;
 }
