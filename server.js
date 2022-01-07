@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Day = require("./models/day");
 const Actual = require("./models/actual");
+const Task = require("./models/task");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const dbURI =
@@ -17,34 +18,58 @@ app.use(bodyParser.json());
 
 app.post("/day", (req, res) => {
   if (req.body.planned) {
-    const day = new Day({
+    const day = {
       weekday: req.body.weekday,
       bubbles: req.body.bubbles,
-    });
+    };
 
-    day
-      .save()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((error) => {
-        console.log("fehler");
-      });
+    Day.findOneAndUpdate({ weekday: req.body.weekday }, day, { upsert: true }, function (err, doc) {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send(doc);
+      }
+    });
   } else {
-    const day = new Actual({
+    const day = {
       weekday: req.body.weekday,
       bubbles: req.body.bubbles,
-    });
+    };
 
-    day
-      .save()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((error) => {
-        console.log("fehler");
-      });
+    Actual.findOneAndUpdate(
+      { weekday: req.body.weekday },
+      day,
+      { upsert: true },
+      function (err, doc) {
+        if (err) {
+          console.log(err);
+          res.send(err);
+        } else {
+          res.send(doc);
+        }
+      }
+    );
   }
+});
+app.post("/task", (req, res) => {
+  const tasks = req.body.tasks;
+  let weekday = new Date().getDay();
+
+  Task.findOneAndUpdate(
+    { _id: "61d8a003403c6f6903c2c81e" },
+    tasks,
+    { upsert: true },
+    function (err, doc) {
+      if (err) {
+        console.log(doc, req.body);
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send(doc);
+      }
+    }
+  );
 });
 
 app.get("/all-days", (req, res) => {

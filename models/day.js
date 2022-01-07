@@ -12,6 +12,8 @@ const daySchema = new Schema({
       id: String,
       title: String,
       color: String,
+      tasks: [],
+      tags: [],
     },
   ],
 });

@@ -10,6 +10,8 @@ interface BoxState {
   title: string;
   height: number;
   color: string;
+  tasks: string[];
+  tags: string[];
 }
 
 type DayPlannerProps = {
@@ -34,11 +36,11 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
 
   useEffect(() => {
     setBoxes([
-      { id: "1", color: "red", height: 2, title: "SLEEP" },
-      { id: "2", color: "red", height: 2, title: "EAT" },
+      { id: "1", color: "red", height: 2, title: "SLEEP", tasks: [], tags: ["uf", "duf"] },
+      { id: "2", color: "red", height: 2, title: "EAT", tasks: [], tags: ["uf", "duf"] },
     ]);
     document.addEventListener("mouseup", releaseDrag);
-    getDay(1);
+    getDay(new Date().getDay());
   }, []);
 
   const handleBoxMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -73,7 +75,7 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     let height = Math.floor(y / 20) + 1;
 
     if (height > getBoxHeight(node.id)) {
-      if (getBoxesHeight() < 32) {
+      if (getBoxesHeight() < 32 - 2) {
         saveBoxWidth(node, height);
         node.style.height = `${height * 20}px`;
       }
@@ -93,9 +95,10 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     let copyBoxes = [...boxes];
     let newId = String(parseInt(copyBoxes[copyBoxes.length - 1].id) + 1);
 
-    let boxTitle = (document.getElementById("new-box-name") as HTMLInputElement).value;
+    /* let boxTitle = (document.getElementById("new-box-name") as HTMLInputElement).value; */
+    let boxTitle = "";
 
-    copyBoxes.push({ id: newId, title: boxTitle, height: 1, color: "" });
+    copyBoxes.push({ id: newId, title: boxTitle, height: 1, color: "", tasks: [], tags: [] });
     setBoxes(copyBoxes);
 
     document.cookie = JSON.stringify(copyBoxes);
@@ -279,8 +282,19 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
     globalActiveBox(node.id);
     node.classList.add("box-active");
   };
+
+  const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    let inputElement = e.target as HTMLInputElement;
+    if (e.key === "Enter") {
+      let copy = boxes;
+      let index = boxes.findIndex((box) => box.id === selectedBox!.id);
+      copy[index].tags.push(inputElement.value);
+      setBoxes(copy);
+    }
+  };
   return (
     <div className="App" onClick={hideContextMenu}>
+      <span onClick={addBox}>+</span>
       {boxes.map((box, i) => {
         return (
           <div
@@ -324,6 +338,13 @@ const DayPlanner: React.FC<DayPlannerProps> = ({
             <option value="purple">purple</option>
             <option value="yellow">yellow</option>
           </select>
+          <input
+            className="option stay-active"
+            type="text"
+            onKeyUp={addTag}
+            id="add-tags"
+            placeholder="add tag"
+          />
         </div>
       )}
     </div>
