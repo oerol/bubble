@@ -15,19 +15,19 @@ const Header: React.FC<HeaderProps> = () => {
       <div id="menu-items">
         <ul>
           <li>
-            <a href="">News</a>
+            <a href="">GRIND</a>
           </li>
           <li>
-            <a href="">Observing</a>
+            <a href="">HUSTLE</a>
           </li>
           <li>
-            <a href="">Resources</a>
+            <a href="">STRIVE</a>
           </li>
           <li>
-            <a href="">Community</a>
+            <a href="">THRIVE</a>
           </li>
           <li>
-            <a href="">About Us</a>
+            <a href="">EXCEL</a>
           </li>
         </ul>
       </div>
